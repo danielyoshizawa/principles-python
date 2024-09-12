@@ -83,6 +83,33 @@ print(f"Index of {target} in {sorted_list}: {result}")
 
 # Exercise for the reader:
 # 1. Implement a recursive function to calculate the power of a number (x^n)
+
+def power(x, n):
+    if n == 0:
+        return 1
+    else:
+        return x * power(x, n - 1)
+
+print("Power of 2^3: {}".format(power(2, 3)))
+
 # 2. Write a recursive function to reverse a string
+
+def reverse_string(s):
+    if len(s) == 0:
+        return s
+    else:
+        return reverse_string(s[1:]) + s[0]
+
+print("Reverse of 'hello': {}".format(reverse_string("hello")))
+
 # 3. Create a recursive solution for the Tower of Hanoi problem
 
+def tower_of_hanoi(n, source, auxiliary, target):
+    if n == 1:
+        print(f"Move disk 1 from {source} to {target}")
+    else:
+        tower_of_hanoi(n - 1, source, target, auxiliary)
+        print(f"Move disk {n} from {source} to {target}")
+        tower_of_hanoi(n - 1, auxiliary, source, target)
+
+tower_of_hanoi(3, 'A', 'B', 'C')
