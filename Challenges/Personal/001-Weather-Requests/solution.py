@@ -8,22 +8,25 @@
 
 # You can use any free api available online
 import os
-from dotenv import load_dotenv, dotenv_values
 import requests
+
+from dotenv import load_dotenv
+from functools import reduce
 
 load_dotenv() # Used to not expose my key to the repository
 
 def RetrieveCurrentWeather(data: dict) -> str:
-    return data['current']["condition"]["text"]
+    if reduce(lambda d, key: d.get(key) if d else None, ["current", "condition", "text"], data) is not None:
+        return data['current']["condition"]["text"]
+    else:
+        print("Ill formed response")
+        return ""
 
 def GetCityWeather(city: str) -> str:
     key = os.getenv("WEATHER_API_KEY")
     baseUrl = "http://api.weatherapi.com/v1"
     endpoint = "/current.json"
-    parameters = { 
-        "key": key,
-        "q": city
-        }
+    parameters = { "key": key, "q": city }
     url = baseUrl + endpoint
 
     r = requests.get(url, timeout=3, params=parameters)
@@ -35,9 +38,6 @@ def GetCityWeather(city: str) -> str:
         return ""
 
 cities = ["Chicago", "Sao Paulo", "Mumbai", "Tokio", "Toronto"]
-
-result = dict()
-for city in cities:
-    result[city] = GetCityWeather(city)
+result = {city : GetCityWeather(city) for city in cities}
 
 print(result)
