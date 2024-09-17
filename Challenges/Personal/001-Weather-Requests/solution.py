@@ -32,7 +32,7 @@ def GetCityWeather(city: str) -> str:
     r = requests.get(url, timeout=3, params=parameters)
 
     if r.status_code == 200:
-       return RetrieveCurrentWeather(r.json())
+        return RetrieveCurrentWeather(r.json())
     else:
         print(f"Request to {url} failed with code {r.status_code}")
         return ""
